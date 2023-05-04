@@ -1,0 +1,17 @@
+diff --git a/oscam-emm.c b/oscam-emm.c
+index fc75799..7c1b6d1 100644
+--- a/oscam-emm.c
++++ b/oscam-emm.c
+@@ -207,6 +207,12 @@ int32_t emm_reader_match(struct s_reader *reader, uint16_t caid, uint32_t provid
+ 
+ 	uint32_t prid = reader->auprovid;
+ 
++    if(prid == 0xFFFFFF)
++    {
++        rdr_log_dbg(reader, D_EMM, "reader auprovid = %06X match since provid is ignored -> SEND!", prid);
++        return 1;
++    }
++
+ 	if(caid_is_viaccess(caid) && (prid != 0) && ((prid &0xFFFFF0) != prid)) // viaccess fixup last digit of provid is a dont care!
+ 	{
+ 		prid &= 0xFFFFF0;

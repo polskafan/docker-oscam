@@ -9,6 +9,8 @@ ARG OSCAM_VERSION
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="saarg"
 
+COPY patches/ /
+
 RUN \
   echo "**** install build packages ****" && \
   apk add --no-cache --virtual=build-dependencies \
@@ -30,6 +32,7 @@ RUN \
   fi && \
   svn checkout https://svn.streamboard.tv/oscam/trunk@${OSCAM_VERSION} /tmp/oscam-svn && \
   cd /tmp/oscam-svn && \
+  patch -i /patches/provid.patch && \
   ./config.sh \
     --enable all \
     --disable \
